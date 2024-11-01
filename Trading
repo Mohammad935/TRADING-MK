@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج استبيان التداول</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin-top: 20px;
+        }
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>استبيان حول خبرتك في التداول</h1>
+
+    <div id="languageSelection">
+        <label for="language">الرجاء اختيار لغتك المفضلة:</label>
+        <select id="language" onchange="showExperienceQuestion()">
+            <option value="">-- اختر --</option>
+            <option value="arabic">العربية</option>
+            <option value="english">English</option>
+            <option value="french">Français</option>
+            <option value="turkish">Türkçe</option>
+            <option value="german">Deutsch</option>
+            <option value="serbian">Srpski</option>
+        </select>
+    </div>
+
+    <div id="question1" class="question" style="display: none;">
+        <p id="experienceText"></p>
+        <select id="experience" onchange="showSecondQuestion()">
+            <option value="">-- اختر --</option>
+            <option value="beginner">مبتدئ</option>
+            <option value="intermediate">متوسط</option>
+            <option value="professional">محترف</option>
+        </select>
+    </div>
+
+    <div id="question2" class="question" style="display: none;">
+        <p id="helpText"></p>
+        <select id="help" onchange="showNextOptions()">
+            <option value="">-- اختر --</option>
+            <option value="course">كورس تداول من الصفر الى الاحتراف</option>
+            <option value="investment">استثمار معنا بعائد 50% من رأس مالك أسبوعياً</option>
+            <option value="trading">صفقات تداول على سوق الذهب والنازداك والبتكوين</option>
+            <option value="account_management">إدارة حسابات عن طريق MT5 أو MT4</option>
+        </select>
+    </div>
+
+    <div id="optionsContainer" class="form-container"></div>
+
+    <script>
+        const texts = {
+            arabic: {
+                experience: "ما مدى خبرتك في التداول؟",
+                help: "ما الذي يمكننا أن نساعدك فيه؟",
+                course_type: "اختر نوع الكورس:",
+                investment_value: "حدد قيمة الاستثمار الذي تريد الاستثمار به معنا:",
+                subscription_info: "قيمة الاشتراك 50 دولار أسبوعياً",
+                account_platform: "على أي منصة تمتلك الحساب؟",
+                account_value: "كم قيمة الأموال الموجودة في الحساب؟",
+                form_title: "يرجى ملء التفاصيل أدناه:",
+                recorded_course: "كورس مسجل بقيمة 150 دولار",
+                live_course: "كورس مباشر مع مدرب ومتابعة شخصية بقيمة 300 دولار",
+                mt5: "MT5",
+                mt4: "MT4",
+            },
+            english: {
+                experience: "What is your trading experience level?",
+                help: "How can we assist you?",
+                course_type: "Choose the type of course:",
+                investment_value: "Specify the amount you want to invest with us:",
+                subscription_info: "The subscription fee is $50 per week.",
+                account_platform: "Which platform do you have an account on?",
+                account_value: "What is the value of the funds in the account?",
+                form_title: "Please fill in the details below:",
+                recorded_course: "Recorded course for $150",
+                live_course: "Live course with trainer for $300",
+                mt5: "MT5",
+                mt4: "MT4",
+            },
+            french: {
+                experience: "Quel est votre niveau d'expérience en trading?",
+                help: "Comment pouvons-nous vous aider?",
+                course_type: "Choisissez le type de cours:",
+                investment_value: "Indiquez le montant que vous souhaitez investir avec nous:",
+                subscription_info: "Le coût de l'abonnement est de 50 $ par semaine.",
+                account_platform: "Sur quelle plateforme avez-vous un compte?",
+                account_value: "Quelle est la valeur des fonds dans le compte?",
+                form_title: "Veuillez remplir les détails ci-dessous:",
+                recorded_course: "Cours enregistré pour 150 $",
+                live_course: "Cours en direct avec un formateur pour 300 $",
+                mt5: "MT5",
+                mt4: "MT4",
+            },
+            turkish: {
+                experience: "Ticaret deneyiminiz seviyesi nedir?",
+                help: "Size nasıl yardımcı olabiliriz?",
+                course_type: "Kurs türünü seçin:",
+                investment_value: "Bizimle yatırım yapmak istediğiniz miktarı belirtin:",
+                subscription_info: "Abonelik ücreti haftada 50 $ 'dır.",
+                account_platform: "Hangi platformda hesabınız var?",
+                account_value: "Hesaptaki fonların değeri nedir?",
+                form_title: "Lütfen aşağıdaki bilgileri doldurun:",
+                recorded_course: "Kayıtlı kurs 150 $",
+                live_course: "Eğitmen ile canlı kurs 300 $",
+                mt5: "MT5",
+                mt4: "MT4",
+            },
+            german: {
+                experience: "Wie ist Ihr Handelsniveau?",
+                help: "Wie können wir Ihnen helfen?",
+                course_type: "Wählen Sie den Kurstyp:",
+                investment_value: "Geben Sie den Betrag an, den Sie bei uns investieren möchten:",
+                subscription_info: "Die Abonnementgebühr beträgt 50 $ pro Woche.",
+                account_platform: "Auf welcher Plattform haben Sie ein Konto?",
+                account_value: "Wie hoch ist der Wert der Mittel auf dem Konto?",
+                form_title: "Bitte füllen Sie die folgenden Details aus:",
+                recorded_course: "Aufgezeichneter Kurs für 150 $",
+                live_course: "Live-Kurs mit Trainer für 300 $",
+                mt5: "MT5",
+                mt4: "MT4",
+            },
+            serbian: {
+                experience: "Koliko imate iskustva u trgovanju?",
+                help: "Kako možemo da vam pomognemo?",
+                course_type: "Izaberite tip kursa:",
+                investment_value: "Odredite iznos koji želite da investirate sa nama:",
+                subscription_info: "Cena pretplate je 50 $ nedeljno.",
+                account_platform: "Na kojoj platformi imate račun?",
+                account_value: "Kolika je vrednost sredstava na računu?",
+                form_title: "Molimo vas da popunite donje podatke:",
+                recorded_course: "Zabeleženi kurs za 150 $",
+                live_course: "Živi kurs sa trenerom za 300 $",
+                mt5: "MT5",
+                mt4: "MT4",
+            }
+        };
+
+        function showExperienceQuestion() {
+            const language = document.getElementById("language").value;
+            const question1 = document.getElementById("question1");
+            const experienceText = document.getElementById("experienceText");
+            experienceText.textContent = texts[language].experience;
+            question1.style.display = language ? "block" : "none";
+            document.getElementById("question2").style.display = "none"; // Hide question 2
+            document.getElementById("optionsContainer").innerHTML = ''; // Clear options
+        }
+
+        function showSecondQuestion() {
+            const experience = document.getElementById("experience").value;
+            const question2 = document.getElementById("question2");
+            const helpText = document.getElementById("helpText");
+            helpText.textContent = texts[document.getElementById("language").value].help;
+            question2.style.display = experience ? "block" : "none";
+            document.getElementById("optionsContainer").innerHTML = ''; // Clear options
+        }
+
+        function showNextOptions() {
+            const help = document.getElementById("help").value;
+            const optionsContainer = document.getElementById("optionsContainer");
+            optionsContainer.innerHTML = ''; // Clear previous options
+
+            const language = document.getElementById("language").value;
+
+            if (help === "course") {
+                optionsContainer.innerHTML = `
+                    <p>${texts[language].course_type}</p>
+                    <select id="courseType" onchange="showForm()">
+                        <option value="">-- اختر --</option>
+                        <option value="recorded">${texts[language].recorded_course}</option>
+                        <option value="live">${texts[language].live_course}</option>
+                    </select>
+                `;
+            } else if (help === "investment") {
+                optionsContainer.innerHTML = `
+                    <p>${texts[language].investment_value}</p>
+                    <input type="number" placeholder="أدخل قيمة الاستثمار هنا" id="investmentAmount">
+                    <button onclick="showForm()">تم</button>
+                `;
+            } else if (help === "trading") {
+                optionsContainer.innerHTML = `
+                    <p>${texts[language].subscription_info}</p>
+                    <button onclick="showForm()">التالي</button>
+                `;
+            } else if (help === "account_management") {
+                optionsContainer.innerHTML = `
+                    <p>${texts[language].account_platform}</p>
+                    <select id="platform" onchange="showAccountValue()">
+                        <option value="">-- اختر --</option>
+                        <option value="mt5">${texts[language].mt5}</option>
+                        <option value="mt4">${texts[language].mt4}</option>
+                    </select>
+                `;
+            }
+            optionsContainer.style.display = "block"; // Show options container
+        }
+
+        function showAccountValue() {
+            const platform = document.getElementById("platform").value;
+            const optionsContainer = document.getElementById("optionsContainer");
+            if (platform) {
+                optionsContainer.innerHTML = `
+                    <p>${texts[document.getElementById("language").value].account_value}</p>
+                    <input type="number" placeholder="أدخل قيمة الأموال هنا" id="accountValue">
+                    <button onclick="showForm()">التالي</button>
+                `;
+            }
+        }
+
+        function showForm() {
+            const formContainer = document.createElement("div");
+            formContainer.className = "form-container";
+            const language = document.getElementById("language").value;
+            formContainer.innerHTML = `
+                <h2>${texts[language].form_title}</h2>
+                <input type="text" placeholder="اسمك" required><br>
+                <input type="text" placeholder="بلدك" required><br>
+                <input type="text" placeholder="رقم الواتس اب" required><br>
+                <button type="submit">إرسال</button>
+            `;
+            document.getElementById("optionsContainer").appendChild(formContainer);
+        }
+    </script>
+
+</body>
+</html>
